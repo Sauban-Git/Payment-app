@@ -1,12 +1,13 @@
 import { useRef } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function CreateAccount() {
   const firstNameRef = useRef();
   const lastNameRef = useRef();
   const usernameRef = useRef();
   const passwordRef = useRef();
+  const navigate = useNavigate();
 
   async function createAccount() {
     const firstName = firstNameRef.current.value;
@@ -34,6 +35,8 @@ export function CreateAccount() {
     firstNameRef.current.value = "";
     lastNameRef.current.value = "";
     passwordRef.current.value = "";
+    navigate("/")
+    
   }
 
   return (
