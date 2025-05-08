@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export function SendConfirm() {
+  const url = import.meta.env.VITE_BE_URL
     const navigate = useNavigate();
   const amountRef = useRef();
   const toAccount = useRecoilValue(recieverAtom);
@@ -13,7 +14,7 @@ export function SendConfirm() {
 
   async function sendMoney() {
     const transferStatus = await axios.post(
-      "http://localhost:3000/account/transfer",
+      `${url}/account/transfer`,
       {
         toAccount: toAccount._id,
         amount: amountRef.current.value,

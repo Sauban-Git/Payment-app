@@ -4,11 +4,12 @@ import { userListAtom } from "../atoms/account";
 import { ListUser } from "./ListUsers";
 
 export function TransferMoney() {
+  const url = import.meta.env.VITE_BE_URL
   const token = localStorage.getItem("token");
   const [usersList, setUserslist] = useRecoilState(userListAtom);
   async function searchAcc(value) {
     const users = await axios.post(
-      "http://localhost:3000/user/users",
+      `${url}/user/users`,
       {
         username: value,
       },

@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 export function CreateAccount() {
+  const url = import.meta.env.VITE_BE_URL
   const firstNameRef = useRef();
   const lastNameRef = useRef();
   const usernameRef = useRef();
@@ -15,7 +16,7 @@ export function CreateAccount() {
     const username = usernameRef.current.value;
     const password = passwordRef.current.value;
     const idk = await axios.post(
-      "http://localhost:3000/user/signup",
+      `${url}/user/signup`,
       {
         firstName: firstName,
         lastName: lastName,
