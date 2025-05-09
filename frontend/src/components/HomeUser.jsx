@@ -27,7 +27,7 @@ export function HomeUser() {
       if (!response.data.balance) {
         console.log(response.data.msg);
         alert(response.data.msg);
-        navigate("/signup");
+        navigate("/login");
       } else {
         setUserinfo(response.data);
         pressed = true;

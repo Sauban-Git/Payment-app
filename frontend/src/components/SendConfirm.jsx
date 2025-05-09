@@ -5,8 +5,8 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export function SendConfirm() {
-  const url = import.meta.env.VITE_BE_URL
-    const navigate = useNavigate();
+  const url = import.meta.env.VITE_BE_URL;
+  const navigate = useNavigate();
   const amountRef = useRef();
   const toAccount = useRecoilValue(recieverAtom);
   const token = localStorage.getItem("token");
@@ -26,8 +26,13 @@ export function SendConfirm() {
         },
       }
     );
-    console.log(transferStatus.data.success);
-    setTransferSuccess(transferStatus.data.success);
+    if (transferStatus.data.success) {
+      console.log(transferStatus.data.success);
+      setTransferSuccess(true);
+    } else {
+      setTransferSuccess(false);
+      alert(transferStatus.data.msg);
+    }
   }
 
   return (

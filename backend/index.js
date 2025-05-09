@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express");
 const User = require("./db");
 const userRouter = require("./routes/user");
@@ -11,11 +12,7 @@ const port = 3000;
 app.use(express.json());
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "http://localhost:5174",
-      "http://192.168.144.251:5173",
-    ], // your frontend's IP
+    origin: `${process.env.fe_url}`, // your frontend's IP
     credentials: true,
   })
 );

@@ -19,7 +19,7 @@ export function ListUser({ usersList }) {
                   setToAccount(user)
                   navigate("/confirmSend")
                 }}
-                className="absolute top-1/2  right-2 hidden group-hover:inline-block bg-blue-500 text-white px-4 py-2 rounded transform -translate-y-1/2"
+                className="absolute top-1/2  right-2 md:hidden group-hover:inline-block bg-blue-500 text-white px-4 py-2 rounded transform -translate-y-1/2"
               >
                 <svg
                   fill="none"

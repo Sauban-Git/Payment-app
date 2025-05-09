@@ -33,12 +33,14 @@ router.post("/transfer", authMiddleWare, async (req, res) => {
 
     if (!amount || amount > senderData.balance) {
       await session.abortTransaction();
+      console.log("Insufficient balance")
       return res.status(400).json({
         msg: "Insufficient balance.",
       });
     }
     if (!recieverData) {
       console.log(recieverData);
+      console.log("Reciever account doesnt exist.")
       await session.abortTransaction();
       return res.status(400).json({
         msg: "Reciever account doesnt exist.",

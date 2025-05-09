@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function UserSignin() {
-  const url = import.meta.env.VITE_BE_URL
+  const navigate = useNavigate();
+  const url = import.meta.env.VITE_BE_URL;
   const usernameRef = useRef();
   const passwordRef = useRef();
   async function loginUser() {
@@ -25,11 +26,13 @@ export function UserSignin() {
       alert(login.data.msg);
     } else {
       localStorage.setItem("token", login.data.token);
+      alert(login.data.msg);
+      navigate("/");
     }
   }
   return (
     <div className="flex justify-center">
-      <div className="grid p-5 justify-center rounded-xl shadow-xl" >
+      <div className="grid p-5 justify-center rounded-xl shadow-xl">
         <div className="m-2 rounded-xl p-2 shadow-2xl">
           <input
             className="m-2 p-2"

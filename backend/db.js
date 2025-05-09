@@ -1,6 +1,6 @@
+require('dotenv').config()
 const mongoose = require("mongoose");
-
-const db_url = "mongodb://localhost:27017/users";
+const db_url = `${process.env.db_url}/users`;
 mongoose
   .connect(db_url)
   .then(() => console.log("MongoDB connected"))
