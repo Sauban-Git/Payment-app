@@ -1,99 +1,106 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export function CreateAccount() {
-  const url = import.meta.env.VITE_BE_URL
+  const url = import.meta.env.VITE_BE_URL;
   const firstNameRef = useRef();
   const lastNameRef = useRef();
   const usernameRef = useRef();
   const passwordRef = useRef();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   async function createAccount() {
+    setLoading(true);
     const firstName = firstNameRef.current.value;
     const lastName = lastNameRef.current.value;
     const username = usernameRef.current.value;
     const password = passwordRef.current.value;
-    const idk = await axios.post(
-      `${url}/user/signup`,
-      {
-        firstName: firstName,
-        lastName: lastName,
-        username: username,
-        password: password,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const res = idk.data;
-    const token = res.token;
-    storeAuth(token);
-    usernameRef.current.value = "";
-    firstNameRef.current.value = "";
-    lastNameRef.current.value = "";
-    passwordRef.current.value = "";
-    navigate("/")
-    
+
+    try {
+      const response = await axios.post(
+        `${url}/user/signup`,
+        { firstName, lastName, username, password },
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      const token = response.data.token;
+      storeAuth(token);
+
+      // Clear fields
+      usernameRef.current.value = "";
+      firstNameRef.current.value = "";
+      lastNameRef.current.value = "";
+      passwordRef.current.value = "";
+
+      navigate("/");
+    } catch (error) {
+      console.error("Signup failed:", error);
+      alert("Signup failed. Please check your input.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-    <div className="flex justify-center">
-      <div className="grid p-5 justify-center rounded-xl shadow-xl ">
-        <div className="m-2 rounded-xl p-2 shadow-2xl">
+    <motion.div
+      className="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-100 to-blue-200"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
+      <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-2xl">
+        <h2 className="text-2xl font-bold text-center mb-6 text-blue-600">Create Account</h2>
+
+        <div className="space-y-4">
           <input
-            className="m-2 p-2"
-            type="text"
-            placeholder="Enter first name"
             ref={firstNameRef}
-          />
-        </div>
-        <div className="m-2 rounded-xl p-2 shadow-2xl">
-          <input
-            className="m-2 p-2"
             type="text"
-            placeholder="Enter last name"
+            placeholder="First Name"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          <input
             ref={lastNameRef}
-          />
-        </div>
-        <div className="m-2 rounded-xl p-2 shadow-2xl">
-          <input
-            className="m-2 p-2"
             type="text"
-            placeholder="Enter username or email"
+            placeholder="Last Name"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          <input
             ref={usernameRef}
-          />
-        </div>
-        <div className="m-2 rounded-xl p-2 shadow-2xl">
-          <input
-            className="m-2 p-2"
             type="text"
-            placeholder="Enter password of at least 6 letter"
-            ref={passwordRef}
+            placeholder="Email or Username"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
-        </div>
-        {/* <div className="m-2 rounded-xl p-2 shadow-2xl flex justify-center bg-blue-500"> */}
-        <button
-          onClick={createAccount}
-          className="m-2 rounded-xl p-2 shadow-2xl flex justify-center bg-blue-500"
-        >
-          Submit
-        </button>
-        <div className="p-2 m-2">
-          Have Account?{" "}
-          <Link
-            to="/login"
-            className="text-blue-700 hover:underline dark:text-blue-500"
+          <input
+            ref={passwordRef}
+            type="password"
+            placeholder="Password (min 6 characters)"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+
+          <button
+            onClick={createAccount}
+            disabled={loading}
+            className={`w-full py-2 mt-4 font-semibold rounded-lg transition-colors ${
+              loading
+                ? "bg-blue-300 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700 text-white"
+            }`}
           >
+            {loading ? "Creating..." : "Submit"}
+          </button>
+        </div>
+
+        <div className="text-center mt-4">
+          <span>Already have an account? </span>
+          <Link to="/login" className="text-blue-600 hover:underline">
             Sign in
           </Link>
         </div>
-        {/* </div> */}
       </div>
-    </div>
+    </motion.div>
   );
 }
 

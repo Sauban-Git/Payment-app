@@ -22,6 +22,7 @@ router.get("/", authMiddleWare, async (req, res) => {
   // console.log(accInfo)
   // console.log(accBalance);
   res.json({
+    username: accInfo.username,
     firstName: accInfo.firstName,
     lastName: accInfo.lastName,
     balance: accBalance.balance,
