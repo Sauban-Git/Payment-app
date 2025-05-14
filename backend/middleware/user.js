@@ -49,7 +49,6 @@ async function signinMiddleWare(req, res, next) {
 
 function authMiddleWare(req, res, next) {
   const auth = req.headers.authorization;
-  console.log("ye h auth:  \n"+ auth + "\n---------------");
   if (!auth || !auth.startsWith("Bearer")) {
     return res.json({
       msg: "Wrong auth! Please login again.",
@@ -57,7 +56,6 @@ function authMiddleWare(req, res, next) {
   }
   const token = auth.split(" ")[1];
   jwt.verify(token, JWT_SECRET, (err, decoded) => {
-    console.log(decoded);
 
     if (!err) {
       req.userId = decoded.id;

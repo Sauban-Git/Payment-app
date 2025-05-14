@@ -36,7 +36,6 @@ export function UserSignin() {
         alert(msg || "Login failed.");
       } else {
         localStorage.setItem("token", token);
-        alert(msg || "Login successful.");
         navigate("/");
       }
     } catch (err) {

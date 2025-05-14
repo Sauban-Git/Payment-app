@@ -12,7 +12,7 @@ const port = 3000;
 app.use(express.json());
 app.use(
   cors({
-    origin: `${process.env.fe_url}`, // your frontend's IP
+    origin: "http://192.168.175.251:5173", // your frontend's IP
     credentials: true,
   })
 );

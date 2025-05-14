@@ -1,6 +1,7 @@
-require('dotenv').config()
+require("dotenv").config();
+const url = process.env.db_url;
 const mongoose = require("mongoose");
-const db_url = `${process.env.db_url}/users`;
+const db_url = `${url}/users`;
 mongoose
   .connect(db_url)
   .then(() => console.log("MongoDB connected"))
@@ -47,10 +48,37 @@ const accountSchema = new mongoose.Schema({
   },
 });
 
+const transferHistorySchema = new mongoose.Schema({
+  senderId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  receiverId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  amount: {
+    type: Number,
+    required: true,
+    min: 0,
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
 const User = mongoose.model("User", userSchema);
 const Account = mongoose.model("Account", accountSchema);
+const TransferHistory = mongoose.model(
+  "TransferHistory",
+  transferHistorySchema
+);
 
 module.exports = {
   User,
   Account,
+  TransferHistory,
 };

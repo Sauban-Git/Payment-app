@@ -1,5 +1,3 @@
-
-
 import { useRecoilValue } from "recoil";
 import { recieverAtom } from "../atoms/account";
 import axios from "axios";
@@ -84,11 +82,12 @@ export function SendConfirm() {
       <button
         onClick={sendMoney}
         disabled={loading}
+        visiblity={!transferSuccess}
         className={`w-full py-2 rounded-lg font-semibold transition ${
           loading
             ? "bg-blue-300 cursor-not-allowed"
             : "bg-blue-600 hover:bg-blue-700 text-white"
-        }`}
+        } ${transferSuccess !== null ? "hidden" : ""} `}
       >
         {loading ? "Sending..." : "Send"}
       </button>
@@ -103,10 +102,35 @@ export function SendConfirm() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            {transferSuccess ? "✅ Transfer Successful" : "❌ Transfer Failed"}
+            {transferSuccess
+              ? `✅ Transfer of ₹${amountRef.current.value} was Successful`
+              : "❌ Transfer Failed"}
           </motion.div>
         )}
       </AnimatePresence>
+      <div className={`flex justify-center`}>
+        <button
+          onClick={() => navigate("/transfer")}
+          className={`px-6 py-3 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-xl shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-300 flex items-center space-x-2 ${
+            transferSuccess !== null ? "" : "hidden"
+          } `}
+        >
+          Re-Send
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="w-5 h-5"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+            />
+          </svg>
+        </button>
+      </div>
 
       <button
         onClick={() => navigate("/")}

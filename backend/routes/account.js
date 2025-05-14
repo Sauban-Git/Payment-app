@@ -1,25 +1,23 @@
 const { Router } = require("express");
 const { authMiddleWare } = require("../middleware/user");
-const { Account, User } = require("../db");
+const { Account, User, TransferHistory } = require("../db");
 const { default: mongoose } = require("mongoose");
 const router = Router();
 
 router.get("/balance", authMiddleWare, async (req, res) => {
-  console.log("Hello from account///");
   const senderData = await Account.findOne({
     userId: req.userId,
   });
-  console.log(senderData.balance);
   res.json({
     balance: senderData.balance,
   });
 });
 
+
 router.post("/transfer", authMiddleWare, async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
   const recieverId = req.body.toAccount;
-  console.log(recieverId);
   const userId = req.userId;
   const amount = req.body.amount;
   try {
@@ -27,30 +25,26 @@ router.post("/transfer", authMiddleWare, async (req, res) => {
       userId: userId,
     }).session(session);
 
-    const recieverData = await Account.findOne({
+    const receiverData = await Account.findOne({
       userId: recieverId,
     }).session(session);
 
     if (!amount || amount > senderData.balance) {
       await session.abortTransaction();
-      console.log("Insufficient balance")
       return res.status(400).json({
         msg: "Insufficient balance.",
       });
     }
-    if (!recieverData) {
-      console.log(recieverData);
-      console.log("Reciever account doesnt exist.")
+    if (!receiverData) {
       await session.abortTransaction();
       return res.status(400).json({
         msg: "Reciever account doesnt exist.",
       });
     }
 
-    console.log("recieve: "+recieverData+"----------------")
     const logii = await Account.updateOne(
       {
-        userId: recieverData.userId,
+        userId: receiverData.userId,
       },
       {
         $inc: {
@@ -58,7 +52,6 @@ router.post("/transfer", authMiddleWare, async (req, res) => {
         },
       }
     ).session(session);
-    console.log(logii)
 
     await Account.updateOne(
       {
@@ -70,13 +63,19 @@ router.post("/transfer", authMiddleWare, async (req, res) => {
         },
       }
     ).session(session);
+
+    await TransferHistory.create({
+      senderId: userId,
+      receiverId: receiverData.userId,
+      amount: amount,
+    })
+
     await session.commitTransaction();
     res.json({
       success: true,
     });
   } catch (err) {
     await session.abortTransaction();
-    console.log(err);
     res.status(500).json({
       success: false,
     });
