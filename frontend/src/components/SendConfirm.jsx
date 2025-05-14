@@ -98,7 +98,7 @@ export function SendConfirm() {
           <motion.div
             className={`mt-4 text-center text-2xl font-semibold ${
               transferSuccess ? "text-green-600" : "text-red-600"
-            }`}
+            } ${transferSuccess !== null ? "" : "hidden"} `}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -111,7 +111,7 @@ export function SendConfirm() {
       </AnimatePresence>
 
       <AnimatePresence>
-        <div className={`flex justify-center`}>
+        <div className={`flex justify-center py-2 px-4 mt-4`}>
           <button
             onClick={() => navigate("/transfer")}
             className={`px-6 py-3 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-xl shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-300 flex items-center space-x-2 ${
