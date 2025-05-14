@@ -6,13 +6,14 @@ const accountRouter = require("./routes/account");
 const app = express();
 const cors = require("cors");
 const secret = require("./config");
+const fe_url = process.env.fe_urls.split(',');
 
 const port = 3000;
 
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://192.168.175.251:5173", // your frontend's IP
+    origin: fe_url, // your frontend's IP
     credentials: true,
   })
 );
