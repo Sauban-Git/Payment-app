@@ -79,18 +79,19 @@ export function SendConfirm() {
         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
       />
 
-      <button
-        onClick={sendMoney}
-        disabled={loading}
-        visiblity={!transferSuccess}
-        className={`w-full py-2 rounded-lg font-semibold transition ${
-          loading
-            ? "bg-blue-300 cursor-not-allowed"
-            : "bg-blue-600 hover:bg-blue-700 text-white"
-        } ${transferSuccess !== null ? "hidden" : ""} `}
-      >
-        {loading ? "Sending..." : "Send"}
-      </button>
+      <AnimatePresence>
+        <button
+          onClick={sendMoney}
+          disabled={loading}
+          className={`w-full py-2 rounded-lg font-semibold transition ${
+            loading
+              ? "bg-blue-300 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700 text-white"
+          } ${transferSuccess !== null ? "hidden" : ""} `}
+        >
+          {loading ? "Sending..." : "Send"}
+        </button>
+      </AnimatePresence>
 
       <AnimatePresence>
         {transferSuccess !== null && (
@@ -108,29 +109,32 @@ export function SendConfirm() {
           </motion.div>
         )}
       </AnimatePresence>
-      <div className={`flex justify-center`}>
-        <button
-          onClick={() => navigate("/transfer")}
-          className={`px-6 py-3 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-xl shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-300 flex items-center space-x-2 ${
-            transferSuccess !== null ? "" : "hidden"
-          } `}
-        >
-          Re-Send
-          <svg
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-5 h-5"
+
+      <AnimatePresence>
+        <div className={`flex justify-center`}>
+          <button
+            onClick={() => navigate("/transfer")}
+            className={`px-6 py-3 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-xl shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-300 flex items-center space-x-2 ${
+              transferSuccess !== null ? "" : "hidden"
+            } `}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
-            />
-          </svg>
-        </button>
-      </div>
+            Re-Send
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-5 h-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+              />
+            </svg>
+          </button>
+        </div>
+      </AnimatePresence>
 
       <button
         onClick={() => navigate("/")}
