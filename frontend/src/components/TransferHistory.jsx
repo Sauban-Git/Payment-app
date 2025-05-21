@@ -18,7 +18,7 @@ export function TransferHistory({ debited = [], credited = [] }) {
         {/* Received transactions */}
         <div className="sm:col-span-2 grid gap-4 p-4">
           <h1 className="text-center">Credited</h1>
-          <div className="transaction-list max-h-48 overflow-y-auto">
+          <div className="transaction-list max-h-96 overflow-y-auto">
             {credited.map((transaction, index) => (
               <motion.div
                 key={transaction._id}
@@ -54,7 +54,7 @@ export function TransferHistory({ debited = [], credited = [] }) {
         {/* Sent transactions */}
         <div className="sm:col-span-2 grid gap-4 p-4">
           <h1 className="text-center">Debited</h1>
-          <div className="transaction-list max-h-48 overflow-y-auto">
+          <div className="transaction-list max-h-96 overflow-y-auto">
             {debited.map((transaction, index) => (
               <motion.div
                 key={transaction._id}
