@@ -8,6 +8,8 @@ const {
 const router = Router();
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = require("../config");
+
+
 router.get("/", authMiddleWare, async (req, res) => {
   const userId = req.userId;
   const debited = await TransferHistory.find({ senderId: userId })
