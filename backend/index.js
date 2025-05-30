@@ -8,7 +8,7 @@ const cors = require("cors");
 const secret = require("./config");
 const fe_url = process.env.fe_urls.split(',');
 
-const port = process.env.port;
+const port = process.env.PORT;
 
 app.use(express.json());
 app.use(
