@@ -40,7 +40,9 @@ export function UserSignin() {
       }
     } catch (err) {
       console.error("Login error:", err);
-      alert("Something went wrong. Please try again later.");
+      alert("Wrong Email or Password. Try again");
+      usernameRef.current.value = "";
+      passwordRef.current.value = "";
     } finally {
       setLoading(false);
     }
