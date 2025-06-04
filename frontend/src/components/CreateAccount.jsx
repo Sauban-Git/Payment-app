@@ -21,6 +21,15 @@ export function CreateAccount() {
     const username = usernameRef.current.value;
     const password = passwordRef.current.value;
 
+    if (username.length < 8 || password.length < 6) {
+        setAlert(true); // Will trigger re-render
+        setLoading(false);
+        setTimeout(() => {
+          setAlert(false);
+        }, 5000);
+        return;
+      }
+
     try {
       const response = await axios.post(
         `${url}/user/signup`,
@@ -40,11 +49,7 @@ export function CreateAccount() {
       navigate("/");
     } catch (error) {
       console.error(error);
-      console.log("Setting alert to true");
-      setAlert(true); // Will trigger re-render
-      setTimeout(() => {
-        setAlert(false);
-      }, 5000);
+
       // console.error("Signup failed:", error);
     } finally {
       setLoading(false);
